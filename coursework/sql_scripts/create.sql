@@ -1,12 +1,3 @@
--- ШНЫРЬ КУРЬЕР
-create table carrier
-(
-    carrier_id    serial primary key,
-    carrier_name  varchar(255) not null,
-    carrier_power real         not null,
-    carrier_speed real         not null,
-    carrier_fame  real         not null
-);
 -- СОГЛАШЕНИЕ О ПОСТАВКЕ/ДОГОВОР ПОСТАВКИ
 create table delivery_agreement
 (
@@ -15,19 +6,12 @@ create table delivery_agreement
     delivery_price        integer not null,
     deal_price            integer not null
 );
-
--- ПРОИЗВОДИТЕЛЬНОСТЬ ДОСТАВКИ
-create table delivery_performance
-(
-    delivery_performance_id serial primary key,
-    result                  boolean not null
-);
 -- СЕКТОР
 create table sector
 (
     sector_id    serial primary key,
     pirate_scale numeric check ( pirate_scale >= 0::numeric and pirate_scale <= 1::numeric ) not null,
-    transitive   boolean                                                   not null
+    transitive   boolean                                                                     not null
 );
 -- ПЛАНЕТА
 create table planet
@@ -44,6 +28,7 @@ create table factory
     factory_name varchar(255) not null,
     type_name    varchar(20)  not null unique
 );
+
 -- ТРЕБОВАНИЕ О ПОСТАВКЕ
 create table delivery_require
 (
@@ -51,6 +36,25 @@ create table delivery_require
     factory_buyer_id    serial references factory (factory_id),
     factory_seller_id   serial references factory (factory_id)
 );
+-- ШНЫРЬ КУРЬЕР
+create table carrier
+(
+    carrier_id              serial primary key,
+    carrier_name            varchar(255) not null,
+    carrier_power           real         not null,
+    carrier_speed           real         not null,
+    carrier_fame            real         not null,
+    delivery_performance_id integer references delivery_require (delivery_require_id)
+);
+
+-- ПРОИЗВОДИТЕЛЬНОСТЬ ДОСТАВКИ
+create table delivery_performance
+(
+    delivery_performance_id serial primary key,
+    result                  boolean,
+    delivery_require_id     serial references delivery_require (delivery_require_id)
+);
+
 -- ВЕЩЬ
 create table item
 (
@@ -80,7 +84,7 @@ create table space_pirate
 (
     pirate_id    serial primary key,
     pirate_name  varchar(20) not null unique check ( length(pirate_name) > 2 ),
-    pirate_power integer     not null check ( pirate_power > 0 ),
+    pirate_power real        not null check ( pirate_power > 0 ),
     sector_id    serial references sector (sector_id)
 );
 
