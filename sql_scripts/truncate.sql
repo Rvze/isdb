@@ -1,0 +1,15 @@
+truncate carrier cascade;
+truncate delivery_require_deal;
+truncate delivery_performance;
+truncate delivery_agreement cascade;
+truncate delivery_require;
+truncate factory cascade;
+truncate item cascade;
+truncate item_factory_production;
+truncate planet;
+truncate sector cascade;
+truncate sector_restrict_come;
+truncate sector_come_price;
+truncate sector_restrict_import;
+truncate space_pirate;
+truncate way;
